@@ -8,17 +8,30 @@ import { useEffect } from "react";
 export default function Navbar() {
 
     useEffect(() => {
-        const list = document.querySelectorAll(`${styles.list}`);
-        console.log('blyattttt')
+        const list = document.querySelectorAll(`.${styles.list}`);
+        const indicator = document.querySelector(`.${styles.indicator}`) as HTMLElement;
 
         function activeLink(this: HTMLLIElement) {
             list.forEach((item) =>
             item.classList.remove(`${styles.active}`));
-            this.classList.add(`${styles.active}`)
+            this.classList.add(`${styles.active}`);
+
+            // Перемещаем индикатор
+            const index = Array.from(list).indexOf(this);
+            const offset = index * 85; // 70px ширина + 15px gap
+            if (indicator) {
+                indicator.style.transform = `translateX(${offset}px)`;
+            }
         }
+
         list.forEach((item) =>
         item.addEventListener('click', activeLink));
-    });
+
+        return () => {
+            list.forEach((item) =>
+            item.removeEventListener('click', activeLink));
+        }
+    }, []);
 
     return (
         <div className={`flex justify-center items-center ${styles.navigation}`}>
@@ -32,7 +45,7 @@ export default function Navbar() {
                             <span className={`${styles.text}`}>Главная</span>
                         </Link>
                     </li>
-                    <li className="list">
+                    <li className={styles.list}>
                         <Link href="" className="">
                             <span className="">
                                 <Image src='/chatbubble-ellipses-outline.svg' alt="Home" width='22' height='22'></Image>
@@ -42,7 +55,7 @@ export default function Navbar() {
                             </span>
                         </Link>
                     </li>
-                    <li className="list">
+                    <li className={styles.list}>
                         <Link href="" className="">
                             <span className="">
                                 <Image src='/book-outline.svg' alt="Home" width='22' height='22'></Image>
@@ -52,7 +65,7 @@ export default function Navbar() {
                             </span>
                         </Link>
                     </li>
-                    <li className="list">
+                    <li className={styles.list}>
                         <Link href="" className="">
                             <span className="">
                                 <Image src='/call-outline.svg' alt="Home" width='22' height='22'></Image>
@@ -62,7 +75,7 @@ export default function Navbar() {
                             </span>
                         </Link>
                     </li>
-                    <li className="list">
+                    <li className={styles.list}>
                         <Link href="" className="">
                             <span className="">
                                 <Image src='/chatbox-ellipses-outline.svg' alt="Home" width='22' height='22'></Image>
